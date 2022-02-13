@@ -166,7 +166,7 @@ shinyServer(function(input, output) {
   observeEvent(input$update, {
     showModal(modalDialog(
       title = "Updating Firebase",
-      "Please wait while we update the website.... This takes about 2 min....."
+      "Please wait while we update the website.... This takes about 3 min....."
     ))
     
     runners_table$last <- rv[["MensRunners"]]$last
