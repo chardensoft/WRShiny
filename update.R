@@ -45,11 +45,8 @@ updateFirebase <- function(MensRunners, WomensRunners, MensTeams, WomensTeams) {
   write_json(conf, "www/conf.json")
   write_json(region, "www/region.json")
   
-  system2(command = "gits", 
-          args = c(paste0('"', Sys.Date(), 'udpate"')))
-  system2(command = "firebase", 
-          args = c("firestore:delete", "-rf", "--project", "the-wood-report-7e7dd", 
-                   '"/Mtransfer"'))
+  system("./gitUpdate.sh")
+  system("./firebaseCmd.sh")
   
   
   # cd ?
