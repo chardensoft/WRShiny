@@ -44,5 +44,24 @@ updateFirebase <- function(MensRunners, WomensRunners, MensTeams, WomensTeams) {
   write_json(div, "www/div.json")
   write_json(conf, "www/conf.json")
   write_json(region, "www/region.json")
+  
+  system2(command = "gits", 
+          args = c(paste0('"', Sys.Date(), 'udpate"')))
+  system2(command = "firebase", 
+          args = c("firestore:delete", "-rf", "--project", "the-wood-report-7e7dd", 
+                   '"/Mtransfer"'))
+  
+  
+  # cd ?
+  # run gits "date update"
+  # run firebase firestore:delete -rf --project the-wood-report-7e7dd "/runners"
+  # run firebase firestore:delete -rf --project the-wood-report-7e7dd "/Wrunners"
+  # run firebase firestore:delete -rf --project the-wood-report-7e7dd "/Wteams"
+  # run firebase firestore:delete -rf --project the-wood-report-7e7dd "/teams"
+  # run firer Wrunners.json
+  # run firet Wteams.json
+  # run firet teams.json
+  # run firer runners.json
+  
   return("All data updated")
 }
