@@ -1,8 +1,0 @@
-[1,"Installing 'DT' ...\n"]
-[2,"trying URL 'https://cran.rstudio.com/bin/macosx/big-sur-arm64/contrib/4.1/DT_0.20.tgz'\n"]
-[2,"Content type 'application/x-gzip' length 1612517 bytes (1.5 MB)\n"]
-[2,"=========="]
-[2,"========================================\ndownloaded 1.5 MB\n\n"]
-[1,"The downloaded binary packages are in\n"]
-[1,"\t/var/folders/_k/7d7ghhlx0sq4430c8zf06g1r0000gn/T//RtmpD0ZXsQ/downloaded_packages\n"]
-[2,"\n\n✔ Package 'DT' successfully installed.\n"]
