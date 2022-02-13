@@ -48,7 +48,7 @@ shinyUI(fluidPage(
                
                # Show a plot of the generated distribution
                mainPanel(
-                 dataTableOutput("table_output")
+                 DT::dataTableOutput("table_output")
                )
               ),
       tabPanel("Instructions", 

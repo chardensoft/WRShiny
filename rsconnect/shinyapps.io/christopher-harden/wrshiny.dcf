@@ -1,0 +1,11 @@
+name: wrshiny
+title:
+username:
+account: christopher-harden
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 5642121
+bundleId: 5573825
+url: https://christopher-harden.shinyapps.io/wrshiny/
+when: 1644733328.69473
+lastSyncTime: 1644733328.69476

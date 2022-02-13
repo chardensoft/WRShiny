@@ -14,6 +14,7 @@ library(DT)
 library(jsonlite)
 source("database2 (team).R")
 source("update.R")
+source("pullGit.R")
 
 runners_table <- bind_rows(read_json(path = "www/runners.json"))
 teams_table <- bind_rows(read_json(path = "www/teams.json"))
@@ -147,7 +148,7 @@ shinyServer(function(input, output) {
     target = 'cell', disable = list(columns = disableCol())
   ), rownames = F)
   
-  proxyTeams <- dataTableProxy("table_output")
+  proxyTeams <- DT::dataTableProxy("table_output")
   
   observeEvent(input$table_output_cell_edit, {
     #get values
@@ -211,6 +212,18 @@ shinyServer(function(input, output) {
     showModal(modalDialog(
       title = "Updating Firebase",
       "DONE!"
+    ))
+  })
+  
+  observeEvent(input$refresh, {
+    showModal(modalDialog(
+      title = "Updating", 
+      "updating...."
+    ))
+    pullFromGit()
+    showModal(modalDialog(
+      title = "Updating", 
+      "updating....Done!"
     ))
   })
 
