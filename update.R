@@ -48,17 +48,5 @@ updateFirebase <- function(MensRunners, WomensRunners, MensTeams, WomensTeams) {
   system("./gitUpdate.sh")
   system("./firebaseCmd.sh")
   
-  
-  # cd ?
-  # run gits "date update"
-  # run firebase firestore:delete -rf --project the-wood-report-7e7dd "/runners"
-  # run firebase firestore:delete -rf --project the-wood-report-7e7dd "/Wrunners"
-  # run firebase firestore:delete -rf --project the-wood-report-7e7dd "/Wteams"
-  # run firebase firestore:delete -rf --project the-wood-report-7e7dd "/teams"
-  # run firer Wrunners.json
-  # run firet Wteams.json
-  # run firet teams.json
-  # run firer runners.json
-  
   return("All data updated")
 }

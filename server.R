@@ -27,12 +27,16 @@ runners_table <- runners_table %>% arrange(place)
 Wraces_table <- Wraces_table %>% arrange(desc(date))
 races_table <- races_table %>% arrange(desc(date))
 
-MensRunners <- runners_table[c(1, 3, 4, 5, 6, 13, 9, 10, 11, 12)]
-WomensRunners <- Wrunners_table[c(1, 3, 4, 5, 6, 13, 9, 10, 11, 12)]
-MensTeams <- teams_table[c(2, 20, 3, 14, 19, 4, 6, 8, 10, 12, 16, 17, 18)]
-WomensTeams <- Wteams_table[c(2, 20, 3, 14, 19, 4, 6, 8, 10, 12, 16, 17, 18)]
-WomensRaces <- Wraces_table[c(2, 3, 4, 5, 6, 7, 10, 11, 13, 17, 20)]
-MensRaces <- races_table[c(2, 3, 4, 5, 6, 7, 10, 11, 13, 17, 20)]
+MensRunners <- runners_table[c("place", "last", "first", "year", "team", "override_rank", 
+                               "rank", "previous_rank", "previous_place", "active")]
+WomensRunners <- Wrunners_table[c("place", "last", "first", "year", "team", "override_rank", 
+                                  "rank", "previous_rank", "previous_place", "active")]
+MensTeams <- teams_table[c("rank", "prev_rank", "name", "teamrank", "prev_rate", "firstrank", "secondrank", "thirdrank", 
+                           "fourthrank", "fifthrank", "div", "conf", "reg")]
+WomensTeams <- Wteams_table[c("rank", "prev_rank", "name", "teamrank", "prev_rate", "firstrank", "secondrank", "thirdrank", 
+                              "fourthrank", "fifthrank", "div", "conf", "reg")]
+WomensRaces <- Wraces_table[c("dist", "type", "race", "date", "PL", "NAME", "YEAR", "TEAM", "TIME", "TIME.IN.S", "Rank")]
+MensRaces <- races_table[c("dist", "type", "race", "date", "PL", "NAME", "YEAR", "TEAM", "TIME", "TIME.IN.S", "Rank")]
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
@@ -41,9 +45,9 @@ shinyServer(function(input, output) {
     if (input$data_choice == "Runners") {
       disable <- c(1, 7, 8, 9)
     } else if (input$data_choice == "Teams") {
-      disable <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+      disable <- c(1:10)
     } else {
-      disable <- c(1,2,3,4,5,6,7,8,9, 10, 11)
+      disable <- c(1:11)
     }
     disable - 1
   })
@@ -78,10 +82,14 @@ shinyServer(function(input, output) {
     Wraces_table <- Wraces_table %>% arrange(desc(date))
     races_table <- races_table %>% arrange(desc(date))
     
-    rv[["MensRunners"]] <- runners_table[c(1, 3, 4, 5, 6, 13, 9, 10, 11, 12)]
-    rv[["MensTeams"]] <- teams_table[c(2, 20, 3, 14, 19, 4, 6, 8, 10, 12, 16, 17, 18)]
-    rv[["WomensRunners"]] <- Wrunners_table[c(1, 3, 4, 5, 6, 13, 9, 10, 11, 12)]
-    rv[["WomensTeams"]] <- Wteams_table[c(2, 20, 3, 14, 19, 4, 6, 8, 10, 12, 16, 17, 18)]
+    rv[["MensRunners"]] <- runners_table[c("place", "last", "first", "year", "team", "override_rank", 
+                                           "rank", "previous_rank", "previous_place", "active")]
+    rv[["MensTeams"]] <- teams_table[c("rank", "prev_rank", "name", "teamrank", "prev_rate", "firstrank", "secondrank", "thirdrank", 
+                                       "fourthrank", "fifthrank", "div", "conf", "reg")]
+    rv[["WomensRunners"]] <- Wrunners_table[c("place", "last", "first", "year", "team", "override_rank", 
+                                              "rank", "previous_rank", "previous_place", "active")]
+    rv[["WomensTeams"]] <- Wteams_table[c("rank", "prev_rank", "name", "teamrank", "prev_rate", "firstrank", "secondrank", "thirdrank", 
+                                          "fourthrank", "fifthrank", "div", "conf", "reg")]
     
     replaceData(proxyTeams, rv[[paste0(input$gender, input$data_choice)]], resetPaging = T, rownames = F)
     showModal(modalDialog(
@@ -108,12 +116,16 @@ shinyServer(function(input, output) {
     Wraces_table <- Wraces_table %>% arrange(desc(date))
     races_table <- races_table %>% arrange(desc(date))
     
-    MensRunners <- runners_table[c(1, 3, 4, 5, 6, 13, 9, 10, 11, 12)]
-    WomensRunners <- Wrunners_table[c(1, 3, 4, 5, 6, 13, 9, 10, 11, 12)]
-    MensTeams <- teams_table[c(2, 20, 3, 14, 19, 4, 6, 8, 10, 12, 16, 17, 18)]
-    WomensTeams <- Wteams_table[c(2, 20, 3, 14, 19, 4, 6, 8, 10, 12, 16, 17, 18)]
-    WomensRaces <- Wraces_table[c(2, 3, 4, 5, 6, 7, 10, 11, 13, 17, 20)]
-    MensRaces <- races_table[c(2, 3, 4, 5, 6, 7, 10, 11, 13, 17, 20)]
+    MensRunners <- runners_table[c("place", "last", "first", "year", "team", "override_rank", 
+                                   "rank", "previous_rank", "previous_place", "active")]
+    WomensRunners <- Wrunners_table[c("place", "last", "first", "year", "team", "override_rank", 
+                                      "rank", "previous_rank", "previous_place", "active")]
+    MensTeams <- teams_table[c("rank", "prev_rank", "name", "teamrank", "prev_rate", "firstrank", "secondrank", "thirdrank", 
+                               "fourthrank", "fifthrank", "div", "conf", "reg")]
+    WomensTeams <- Wteams_table[c("rank", "prev_rank", "name", "teamrank", "prev_rate", "firstrank", "secondrank", "thirdrank", 
+                                  "fourthrank", "fifthrank", "div", "conf", "reg")]
+    WomensRaces <- Wraces_table[c("dist", "type", "race", "date", "PL", "NAME", "YEAR", "TEAM", "TIME", "TIME.IN.S", "Rank")]
+    MensRaces <- races_table[c("dist", "type", "race", "date", "PL", "NAME", "YEAR", "TEAM", "TIME", "TIME.IN.S", "Rank")]
     
     rv[["MensRunners"]] <- MensRunners
     rv[["MensTeams"]] <- MensTeams
@@ -156,12 +168,14 @@ shinyServer(function(input, output) {
       title = "Updating Firebase",
       "Please wait while we update the website.... This takes about 2 min....."
     ))
+    
     runners_table$last <- rv[["MensRunners"]]$last
     runners_table$first <- rv[["MensRunners"]]$first
     runners_table$year <- rv[["MensRunners"]]$year
     runners_table$team <- rv[["MensRunners"]]$team
     runners_table$override_rank <- rv[["MensRunners"]]$override_rank
     runners_table$active <- rv[["MensRunners"]]$active
+    
     Wrunners_table$last <- rv[["WomensRunners"]]$last
     Wrunners_table$first <- rv[["WomensRunners"]]$first
     Wrunners_table$year <- rv[["WomensRunners"]]$year
@@ -183,13 +197,17 @@ shinyServer(function(input, output) {
     Wraces_table <- Wraces_table %>% arrange(desc(date))
     races_table <- races_table %>% arrange(desc(date))
     
-    rv[["MensRunners"]] <- runners_table[c(1, 3, 4, 5, 6, 13, 9, 10, 11, 12)]
-    rv[["MensTeams"]] <- teams_table[c(2, 20, 3, 14, 19, 4, 6, 8, 10, 12, 16, 17, 18)]
-    rv[["WomensRunners"]] <- Wrunners_table[c(1, 3, 4, 5, 6, 13, 9, 10, 11, 12)]
-    rv[["WomensTeams"]] <- Wteams_table[c(2, 20, 3, 14, 19, 4, 6, 8, 10, 12, 16, 17, 18)]
+    rv[["MensRunners"]] <- runners_table[c("place", "last", "first", "year", "team", "override_rank", 
+                                           "rank", "previous_rank", "previous_place", "active")]
+    rv[["MensTeams"]] <- teams_table[c("rank", "prev_rank", "name", "teamrank", "prev_rate", "firstrank", "secondrank", "thirdrank", 
+                                       "fourthrank", "fifthrank", "div", "conf", "reg")]
+    rv[["WomensRunners"]] <- Wrunners_table[c("place", "last", "first", "year", "team", "override_rank", 
+                                              "rank", "previous_rank", "previous_place", "active")]
+    rv[["WomensTeams"]] <- Wteams_table[c("rank", "prev_rank", "name", "teamrank", "prev_rate", "firstrank", "secondrank", "thirdrank", 
+                                          "fourthrank", "fifthrank", "div", "conf", "reg")]
     
     replaceData(proxyTeams, rv[[paste0(input$gender, input$data_choice)]], resetPaging = T, rownames = F)
-    
+
     showModal(modalDialog(
       title = "Updating Firebase",
       "DONE!"
