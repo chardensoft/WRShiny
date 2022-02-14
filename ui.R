@@ -30,13 +30,16 @@ shinyUI(fluidPage(
                                     "Gender",
                                     c("Mens", "Womens"), 
                                     selected = "Mens", 
-                                    selectize = TRUE),
+                                    selectize = TRUE)
+                        
                  ),
                  column(6, 
-                        actionButton("recalc", "Recalculate (Local)", icon = icon("sync")),
-                        actionButton("update", "Update Firebase (Website)", icon = icon("sync")),
-                        actionButton("reset", "Reset (Remove Changes)", icon = icon("sync")),
-                        actionButton("refresh", "New Week", icon = icon("sync")),
+                        actionButton("recalc", "Recalculate (Locally)" 
+                                     # icon = icon("sync")
+                                     ),
+                        actionButton("update", "Update Website (Also recalculates)"),
+                        actionButton("reset", "Reset to Website (Removes all local changes)"),
+                        actionButton("refresh", "Get Chris' Update")
                  )
                ),
                
@@ -45,6 +48,16 @@ shinyUI(fluidPage(
                #     sidebarPanel(
                
                # ),
+               conditionalPanel(
+                 condition = "input.data_choice == 'Runners'",
+                 fluidRow(
+                    actionButton("add", "Add New Runner", 
+                              style = "margin-bottom: 10px"), 
+                    actionButton("deleteRows", "Delete Selected Rows", 
+                              style = "margin-bottom: 10px"), 
+                    style = "margin-left: 2.5px"
+                 )
+               ),
                
                # Show a plot of the generated distribution
                mainPanel(

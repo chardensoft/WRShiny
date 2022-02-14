@@ -5,8 +5,8 @@ updateFirebase <- function(MensRunners, WomensRunners, MensTeams, WomensTeams) {
   ############ MEN
   testrunners <- MensRunners
   testrunners <- testrunners[which(testrunners$active == "active"),]
-  if (length(which(colnames(testrunners) %in% c("RUNNER.ID"))) > 0) {
-    testrunners <- testrunners[,-which(colnames(testrunners) %in% c("RUNNER.ID"))]
+  if (length(which(colnames(testrunners) %in% c("RUNNER.ID", "uniqueTableID"))) > 0) {
+    testrunners <- testrunners[,-which(colnames(testrunners) %in% c("RUNNER.ID", "uniqueTableID"))]
   }
   # testrunners$place <- as.integer(testrunners$place)
   # testrunners$rank <- as.numeric(testrunners$rank)
@@ -20,8 +20,8 @@ updateFirebase <- function(MensRunners, WomensRunners, MensTeams, WomensTeams) {
   ############ WOMEN
   Wtestrunners <- WomensRunners
   Wtestrunners <- Wtestrunners[which(Wtestrunners$active == "active"),]
-  if (length(which(colnames(Wtestrunners) %in% c("RUNNER.ID"))) > 0) {
-    Wtestrunners <- Wtestrunners[,-which(colnames(Wtestrunners) %in% c("RUNNER.ID"))]
+  if (length(which(colnames(Wtestrunners) %in% c("RUNNER.ID", "uniqueTableID"))) > 0) {
+    Wtestrunners <- Wtestrunners[,-which(colnames(Wtestrunners) %in% c("RUNNER.ID", "uniqueTableID"))]
   }
   # Wtestrunners$place <- as.integer(Wtestrunners$place)
   # Wtestrunners$rank <- as.numeric(Wtestrunners$rank)

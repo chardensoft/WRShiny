@@ -3,7 +3,7 @@ library(uuid)
 library(dplyr)
 
 recalculateTeams <- function(MensRunners, MensTeams, WomensRunners, WomensTeams) {
-  Mrunners <- MensRunners
+  Mrunners <- MensRunners[-length(MensRunners)]
   # oldMrunners <- read.csv("database files/Mrunners.csv")
   Mteams <- MensTeams
   
@@ -134,6 +134,8 @@ recalculateTeams <- function(MensRunners, MensTeams, WomensRunners, WomensTeams)
     arrange(active) %>% 
     arrange(team)
   
+  Mrunners$uniqueTableID <- rownames(Mrunners)
+  
   MensRunners <- Mrunners
   MensTeams <- Mteams
   
@@ -143,7 +145,7 @@ recalculateTeams <- function(MensRunners, MensTeams, WomensRunners, WomensTeams)
   
   ###################### WOMEN ##############################
   
-  Wrunners <- WomensRunners
+  Wrunners <- WomensRunners[-length(WomensRunners)]
   # oldWrunners <- read.csv("database files/Wrunners.csv")
   Wteams <- WomensTeams
   
@@ -273,6 +275,8 @@ recalculateTeams <- function(MensRunners, MensTeams, WomensRunners, WomensTeams)
     arrange(desc(rank)) %>% 
     arrange(active) %>% 
     arrange(team)
+  
+  Wrunners$uniqueTableID <- rownames(Wrunners)
   
   WomensRunners <- Wrunners
   WomensTeams <- Wteams
