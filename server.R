@@ -152,7 +152,7 @@ shinyServer(function(input, output) {
   
   output$table_output <- DT::renderDT(rv[[paste0(input$gender, input$data_choice)]], editable = list(
     target = 'cell', disable = list(columns = disableCol())
-  ), rownames = F)
+  ), rownames = F, options = list(pageLength = 25))
   
   proxyTeams <- DT::dataTableProxy("table_output")
   
