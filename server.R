@@ -61,7 +61,9 @@ shinyServer(function(input, output) {
       title = "Recalculating data!",
       "This typically takes about 2 minutes.... please wait...."
     ))
+    # print(length(runners_table$last))
     runners_table$last <- rv[["MensRunners"]]$last
+    # print('here')
     runners_table$first <- rv[["MensRunners"]]$first
     runners_table$year <- rv[["MensRunners"]]$year
     runners_table$team <- rv[["MensRunners"]]$team
@@ -253,10 +255,13 @@ shinyServer(function(input, output) {
   observeEvent(input$deleteRows, {
     if (!is.null(input$table_output_rows_selected)) {
       if (input$gender == "Mens") {
-        runners_table <- runners_table[-which(runners_table$uniqueTableID %in% 
+        # print(which(runners_table$uniqueTableID %in% 
+                      # rv[["MensRunners"]][as.numeric(input$table_output_rows_selected),]$uniqueTableID))
+        runners_table <<- runners_table[-which(runners_table$uniqueTableID %in% 
                          rv[["MensRunners"]][as.numeric(input$table_output_rows_selected),]$uniqueTableID),]
+        # print(length(runners_table$last))
       } else {
-        Wrunners_table <- Wrunners_table[-which(Wrunners_table$uniqueTableID %in% 
+        Wrunners_table <<- Wrunners_table[-which(Wrunners_table$uniqueTableID %in% 
                           rv[["MensRunners"]][as.numeric(input$table_output_rows_selected),]$uniqueTableID),]
       }
       rv[[paste0(input$gender, input$data_choice)]] <- rv[[paste0(input$gender, 
