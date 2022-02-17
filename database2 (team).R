@@ -142,6 +142,7 @@ recalculateTeams <- function(runners_table, teams_table, Wrunners_table, Wteams_
   teams_table <- Mteams
   
   no_runners <- data.frame(team = no_runners[-1,])
+  Mrunners$override_rank[length(Mrunners$rid)] <- Mrunners$rank[length(Mrunners$rid)]
   # write.csv(no_runners, "errors/Mempty_teams.csv", row.names = FALSE)
   
   
@@ -287,6 +288,8 @@ recalculateTeams <- function(runners_table, teams_table, Wrunners_table, Wteams_
   
   no_runners <- data.frame(team = no_runners[-1,])
   # write.csv(no_runners, "errors/Wempty_teams.csv", row.names = FALSE)
+  
+  Wrunners$override_rank[length(Wrunners$rid)] <- Wrunners$rank[length(Wrunners$rid)]
   list(runners_table, teams_table, Wrunners_table, Wteams_table)
 }
 
