@@ -35,6 +35,9 @@ runners_table <- runners_table %>% arrange(place)
 Wraces_table <- Wraces_table %>% arrange(desc(date))
 races_table <- races_table %>% arrange(desc(date))
 
+runners_table$override_rank <- NA
+Wrunners_table$override_rank <- NA
+
 MensRunners <- runners_table[c("place", "last", "first", "year", "team", "override_rank", 
                                "rank", "previous_rank", "previous_place", "active", "uniqueTableID")]
 WomensRunners <- Wrunners_table[c("place", "last", "first", "year", "team", "override_rank", 
@@ -127,13 +130,16 @@ shinyServer(function(input, output) {
     runners_table$uniqueTableID <<- rownames(runners_table)
     Wrunners_table$uniqueTableID <<- rownames(Wrunners_table)
     
-    races_table$date <- as.Date(races_table$date, format = "%m/%d/%y")
-    Wraces_table$date <- as.Date(Wraces_table$date, format = "%m/%d/%y")
+    races_table$date <<- as.Date(races_table$date, format = "%m/%d/%y")
+    Wraces_table$date <<- as.Date(Wraces_table$date, format = "%m/%d/%y")
     
     Wrunners_table <<- Wrunners_table %>% arrange(place)
     runners_table <<- runners_table %>% arrange(place)
     Wraces_table <<- Wraces_table %>% arrange(desc(date))
     races_table <<- races_table %>% arrange(desc(date))
+    
+    runners_table$override_rank <<- NA
+    Wrunners_table$override_rank <<- NA
     
     MensRunners <<- runners_table[c("place", "last", "first", "year", "team", "override_rank", 
                                    "rank", "previous_rank", "previous_place", "active", "uniqueTableID")]
@@ -211,13 +217,16 @@ shinyServer(function(input, output) {
     
     updateFirebase(runners_table, Wrunners_table, teams_table, Wteams_table)
     
-    races_table$date <- as.Date(races_table$date, format = "%m/%d/%y")
-    Wraces_table$date <- as.Date(Wraces_table$date, format = "%m/%d/%y")
+    races_table$date <<- as.Date(races_table$date, format = "%m/%d/%y")
+    Wraces_table$date <<- as.Date(Wraces_table$date, format = "%m/%d/%y")
     
     Wrunners_table <<- Wrunners_table %>% arrange(place)
     runners_table <<- runners_table %>% arrange(place)
     Wraces_table <<- Wraces_table %>% arrange(desc(date))
     races_table <<- races_table %>% arrange(desc(date))
+    
+    runners_table$override_rank <<- NA
+    Wrunners_table$override_rank <<- NA
     
     rv[["MensRunners"]] <- runners_table[c("place", "last", "first", "year", "team", "override_rank", 
                                            "rank", "previous_rank", "previous_place", "active", "uniqueTableID")]

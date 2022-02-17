@@ -12,7 +12,7 @@ recalculateTeams <- function(runners_table, teams_table, Wrunners_table, Wteams_
   Mrunners$RUNNER.ID <- paste0(Mrunners$last, Mrunners$first, Mrunners$team)
   Mrunners$rid[Mrunners$rid == 0] <- NA
   Mrunners$tid[Mrunners$tid == 0] <- NA
-  Mrunners$override_rank[Mrunners$override_rank == ""] <- NA
+  # Mrunners$override_rank[Mrunners$override_rank == ""] <- NA
   Mrunners$rank[Mrunners$rank == ""] <- NA
   Mrunners$previous_rank[Mrunners$previous_rank == ""] <- NA
   Mrunners$previous_place[Mrunners$previous_place == ""] <- NA
@@ -142,7 +142,6 @@ recalculateTeams <- function(runners_table, teams_table, Wrunners_table, Wteams_
   teams_table <- Mteams
   
   no_runners <- data.frame(team = no_runners[-1,])
-  Mrunners$override_rank[length(Mrunners$rid)] <- Mrunners$rank[length(Mrunners$rid)]
   # write.csv(no_runners, "errors/Mempty_teams.csv", row.names = FALSE)
   
   
@@ -156,7 +155,7 @@ recalculateTeams <- function(runners_table, teams_table, Wrunners_table, Wteams_
   Wrunners$RUNNER.ID <- paste0(Wrunners$last, Wrunners$first, Wrunners$team)
   Wrunners$rid[Wrunners$rid == 0] <- NA
   Wrunners$tid[Wrunners$tid == 0] <- NA
-  Wrunners$override_rank[Wrunners$override_rank == ""] <- NA
+  # Wrunners$override_rank[Wrunners$override_rank == ""] <- NA
   Wrunners$rank[Wrunners$rank == ""] <- NA
   Wrunners$previous_rank[Wrunners$previous_rank == ""] <- NA
   Wrunners$previous_place[Wrunners$previous_place == ""] <- NA
@@ -289,7 +288,6 @@ recalculateTeams <- function(runners_table, teams_table, Wrunners_table, Wteams_
   no_runners <- data.frame(team = no_runners[-1,])
   # write.csv(no_runners, "errors/Wempty_teams.csv", row.names = FALSE)
   
-  Wrunners$override_rank[length(Wrunners$rid)] <- Wrunners$rank[length(Wrunners$rid)]
   list(runners_table, teams_table, Wrunners_table, Wteams_table)
 }
 
