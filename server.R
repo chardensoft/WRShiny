@@ -35,8 +35,9 @@ runners_table <- runners_table %>% arrange(place)
 Wraces_table <- Wraces_table %>% arrange(desc(date))
 races_table <- races_table %>% arrange(desc(date))
 
-runners_table$override_rank <- NA
-Wrunners_table$override_rank <- NA
+runners_table$override_rank <- as.numeric(NA)
+Wrunners_table$override_rank <- as.numeric(NA)
+
 
 MensRunners <- runners_table[c("place", "last", "first", "year", "team", "override_rank", 
                                "rank", "previous_rank", "previous_place", "active", "uniqueTableID")]
@@ -138,8 +139,8 @@ shinyServer(function(input, output) {
     Wraces_table <<- Wraces_table %>% arrange(desc(date))
     races_table <<- races_table %>% arrange(desc(date))
     
-    runners_table$override_rank <<- NA
-    Wrunners_table$override_rank <<- NA
+    runners_table$override_rank <<- as.numeric(NA)
+    Wrunners_table$override_rank <<- as.numeric(NA)
     
     MensRunners <<- runners_table[c("place", "last", "first", "year", "team", "override_rank", 
                                    "rank", "previous_rank", "previous_place", "active", "uniqueTableID")]
@@ -225,8 +226,8 @@ shinyServer(function(input, output) {
     Wraces_table <<- Wraces_table %>% arrange(desc(date))
     races_table <<- races_table %>% arrange(desc(date))
     
-    runners_table$override_rank <<- NA
-    Wrunners_table$override_rank <<- NA
+    runners_table$override_rank <<- as.numeric(NA)
+    Wrunners_table$override_rank <<- as.numeric(NA)
     
     rv[["MensRunners"]] <- runners_table[c("place", "last", "first", "year", "team", "override_rank", 
                                            "rank", "previous_rank", "previous_place", "active", "uniqueTableID")]

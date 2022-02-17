@@ -4,7 +4,7 @@ library(dplyr)
 library(stringr)
 
 recalculateTeams <- function(runners_table, teams_table, Wrunners_table, Wteams_table) {
-  Mrunners <- runners_table[-length(runners_table)]
+  Mrunners <- runners_table
   # oldMrunners <- read.csv("database files/Mrunners.csv")
   Mteams <- teams_table
   
@@ -147,7 +147,7 @@ recalculateTeams <- function(runners_table, teams_table, Wrunners_table, Wteams_
   
   ###################### WOMEN ##############################
   
-  Wrunners <- Wrunners_table[-length(Wrunners_table)]
+  Wrunners <- Wrunners_table
   # oldWrunners <- read.csv("database files/Wrunners.csv")
   Wteams <- Wteams_table
   
