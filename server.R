@@ -11,6 +11,7 @@ library(shiny)
 library(dplyr)
 library(uuid)
 library(DT)
+library(stringr)
 library(jsonlite)
 source("database2 (team).R")
 source("update.R")
@@ -25,6 +26,9 @@ races_table <- bind_rows(read_json(path = "www/races.json"))
 
 runners_table$uniqueTableID <- rownames(runners_table)
 Wrunners_table$uniqueTableID <- rownames(Wrunners_table)
+
+races_table$date <- as.Date(races_table$date, format = "%m/%d/%y")
+Wraces_table$date <- as.Date(Wraces_table$date, format = "%m/%d/%y")
 
 Wrunners_table <- Wrunners_table %>% arrange(place)
 runners_table <- runners_table %>% arrange(place)
@@ -62,31 +66,34 @@ shinyServer(function(input, output) {
       "This typically takes about 2 minutes.... please wait...."
     ))
     # print(length(runners_table$last))
-    runners_table$last <- rv[["MensRunners"]]$last
+    runners_table$last <<- rv[["MensRunners"]]$last
     # print('here')
-    runners_table$first <- rv[["MensRunners"]]$first
-    runners_table$year <- rv[["MensRunners"]]$year
-    runners_table$team <- rv[["MensRunners"]]$team
-    runners_table$override_rank <- rv[["MensRunners"]]$override_rank
-    runners_table$active <- rv[["MensRunners"]]$active
-    Wrunners_table$last <- rv[["WomensRunners"]]$last
-    Wrunners_table$first <- rv[["WomensRunners"]]$first
-    Wrunners_table$year <- rv[["WomensRunners"]]$year
-    Wrunners_table$team <- rv[["WomensRunners"]]$team
-    Wrunners_table$override_rank <- rv[["WomensRunners"]]$override_rank
-    Wrunners_table$active <- rv[["WomensRunners"]]$active
+    runners_table$first <<- rv[["MensRunners"]]$first
+    runners_table$year <<- rv[["MensRunners"]]$year
+    runners_table$team <<- rv[["MensRunners"]]$team
+    runners_table$override_rank <<- rv[["MensRunners"]]$override_rank
+    runners_table$active <<- rv[["MensRunners"]]$active
+    Wrunners_table$last <<- rv[["WomensRunners"]]$last
+    Wrunners_table$first <<- rv[["WomensRunners"]]$first
+    Wrunners_table$year <<- rv[["WomensRunners"]]$year
+    Wrunners_table$team <<- rv[["WomensRunners"]]$team
+    Wrunners_table$override_rank <<- rv[["WomensRunners"]]$override_rank
+    Wrunners_table$active <<- rv[["WomensRunners"]]$active
     
     newData <- recalculateTeams(runners_table, teams_table, Wrunners_table, Wteams_table)
     
-    runners_table <- newData[[1]]
-    teams_table <- newData[[2]]
-    Wrunners_table <- newData[[3]]
-    Wteams_table <- newData[[4]]
+    runners_table <<- newData[[1]]
+    teams_table <<- newData[[2]]
+    Wrunners_table <<- newData[[3]]
+    Wteams_table <<- newData[[4]]
     
-    Wrunners_table <- Wrunners_table %>% arrange(place)
-    runners_table <- runners_table %>% arrange(place)
-    Wraces_table <- Wraces_table %>% arrange(desc(date))
-    races_table <- races_table %>% arrange(desc(date))
+    races_table$date <- as.Date(races_table$date, format = "%m/%d/%y")
+    Wraces_table$date <- as.Date(Wraces_table$date, format = "%m/%d/%y")
+    
+    Wrunners_table <<- Wrunners_table %>% arrange(place)
+    runners_table <<- runners_table %>% arrange(place)
+    Wraces_table <<- Wraces_table %>% arrange(desc(date))
+    races_table <<- races_table %>% arrange(desc(date))
     
     rv[["MensRunners"]] <- runners_table[c("place", "last", "first", "year", "team", "override_rank", 
                                            "rank", "previous_rank", "previous_place", "active", "uniqueTableID")]
@@ -110,31 +117,34 @@ shinyServer(function(input, output) {
       title = "Refreshing",
       "Refreshing.... please wait.... "
     ))
-    runners_table <- bind_rows(read_json(path = "www/runners.json"))
-    teams_table <- bind_rows(read_json(path = "www/teams.json"))
-    Wteams_table <- bind_rows(read_json(path = "www/Wteams.json"))
-    Wrunners_table <- bind_rows(read_json(path = "www/Wrunners.json"))
-    Wraces_table <- bind_rows(read_json(path = "www/Wraces.json"))
-    races_table <- bind_rows(read_json(path = "www/races.json"))
+    runners_table <<- bind_rows(read_json(path = "www/runners.json"))
+    teams_table <<- bind_rows(read_json(path = "www/teams.json"))
+    Wteams_table <<- bind_rows(read_json(path = "www/Wteams.json"))
+    Wrunners_table <<- bind_rows(read_json(path = "www/Wrunners.json"))
+    Wraces_table <<- bind_rows(read_json(path = "www/Wraces.json"))
+    races_table <<- bind_rows(read_json(path = "www/races.json"))
     
-    runners_table$uniqueTableID <- rownames(runners_table)
-    Wrunners_table$uniqueTableID <- rownames(Wrunners_table)
+    runners_table$uniqueTableID <<- rownames(runners_table)
+    Wrunners_table$uniqueTableID <<- rownames(Wrunners_table)
     
-    Wrunners_table <- Wrunners_table %>% arrange(place)
-    runners_table <- runners_table %>% arrange(place)
-    Wraces_table <- Wraces_table %>% arrange(desc(date))
-    races_table <- races_table %>% arrange(desc(date))
+    races_table$date <- as.Date(races_table$date, format = "%m/%d/%y")
+    Wraces_table$date <- as.Date(Wraces_table$date, format = "%m/%d/%y")
     
-    MensRunners <- runners_table[c("place", "last", "first", "year", "team", "override_rank", 
+    Wrunners_table <<- Wrunners_table %>% arrange(place)
+    runners_table <<- runners_table %>% arrange(place)
+    Wraces_table <<- Wraces_table %>% arrange(desc(date))
+    races_table <<- races_table %>% arrange(desc(date))
+    
+    MensRunners <<- runners_table[c("place", "last", "first", "year", "team", "override_rank", 
                                    "rank", "previous_rank", "previous_place", "active", "uniqueTableID")]
-    WomensRunners <- Wrunners_table[c("place", "last", "first", "year", "team", "override_rank", 
+    WomensRunners <<- Wrunners_table[c("place", "last", "first", "year", "team", "override_rank", 
                                       "rank", "previous_rank", "previous_place", "active", "uniqueTableID")]
-    MensTeams <- teams_table[c("rank", "prev_rank", "name", "teamrank", "prev_rate", "firstrank", "secondrank", "thirdrank", 
+    MensTeams <<- teams_table[c("rank", "prev_rank", "name", "teamrank", "prev_rate", "firstrank", "secondrank", "thirdrank", 
                                "fourthrank", "fifthrank", "div", "conf", "reg")]
-    WomensTeams <- Wteams_table[c("rank", "prev_rank", "name", "teamrank", "prev_rate", "firstrank", "secondrank", "thirdrank", 
+    WomensTeams <<- Wteams_table[c("rank", "prev_rank", "name", "teamrank", "prev_rate", "firstrank", "secondrank", "thirdrank", 
                                   "fourthrank", "fifthrank", "div", "conf", "reg")]
-    WomensRaces <- Wraces_table[c("dist", "type", "race", "date", "PL", "NAME", "YEAR", "TEAM", "TIME", "TIME.IN.S", "Rank")]
-    MensRaces <- races_table[c("dist", "type", "race", "date", "PL", "NAME", "YEAR", "TEAM", "TIME", "TIME.IN.S", "Rank")]
+    WomensRaces <<- Wraces_table[c("dist", "type", "race", "date", "PL", "NAME", "YEAR", "TEAM", "TIME", "TIME.IN.S", "Rank")]
+    MensRaces <<- races_table[c("dist", "type", "race", "date", "PL", "NAME", "YEAR", "TEAM", "TIME", "TIME.IN.S", "Rank")]
     
     rv[["MensRunners"]] <- MensRunners
     rv[["MensTeams"]] <- MensTeams
@@ -178,33 +188,36 @@ shinyServer(function(input, output) {
       "Please wait while we update the website.... This takes about 3 min....."
     ))
     
-    runners_table$last <- rv[["MensRunners"]]$last
-    runners_table$first <- rv[["MensRunners"]]$first
-    runners_table$year <- rv[["MensRunners"]]$year
-    runners_table$team <- rv[["MensRunners"]]$team
-    runners_table$override_rank <- rv[["MensRunners"]]$override_rank
-    runners_table$active <- rv[["MensRunners"]]$active
+    runners_table$last <<- rv[["MensRunners"]]$last
+    runners_table$first <<- rv[["MensRunners"]]$first
+    runners_table$year <<- rv[["MensRunners"]]$year
+    runners_table$team <<- rv[["MensRunners"]]$team
+    runners_table$override_rank <<- rv[["MensRunners"]]$override_rank
+    runners_table$active <<- rv[["MensRunners"]]$active
     
-    Wrunners_table$last <- rv[["WomensRunners"]]$last
-    Wrunners_table$first <- rv[["WomensRunners"]]$first
-    Wrunners_table$year <- rv[["WomensRunners"]]$year
-    Wrunners_table$team <- rv[["WomensRunners"]]$team
-    Wrunners_table$override_rank <- rv[["WomensRunners"]]$override_rank
-    Wrunners_table$active <- rv[["WomensRunners"]]$active
+    Wrunners_table$last <<- rv[["WomensRunners"]]$last
+    Wrunners_table$first <<- rv[["WomensRunners"]]$first
+    Wrunners_table$year <<- rv[["WomensRunners"]]$year
+    Wrunners_table$team <<- rv[["WomensRunners"]]$team
+    Wrunners_table$override_rank <<- rv[["WomensRunners"]]$override_rank
+    Wrunners_table$active <<- rv[["WomensRunners"]]$active
     
     newData <- recalculateTeams(runners_table, teams_table, Wrunners_table, Wteams_table)
     
-    runners_table <- newData[[1]]
-    teams_table <- newData[[2]]
-    Wrunners_table <- newData[[3]]
-    Wteams_table <- newData[[4]]
+    runners_table <<- newData[[1]]
+    teams_table <<- newData[[2]]
+    Wrunners_table <<- newData[[3]]
+    Wteams_table <<- newData[[4]]
     
     updateFirebase(runners_table, Wrunners_table, teams_table, Wteams_table)
     
-    Wrunners_table <- Wrunners_table %>% arrange(place)
-    runners_table <- runners_table %>% arrange(place)
-    Wraces_table <- Wraces_table %>% arrange(desc(date))
-    races_table <- races_table %>% arrange(desc(date))
+    races_table$date <- as.Date(races_table$date, format = "%m/%d/%y")
+    Wraces_table$date <- as.Date(Wraces_table$date, format = "%m/%d/%y")
+    
+    Wrunners_table <<- Wrunners_table %>% arrange(place)
+    runners_table <<- runners_table %>% arrange(place)
+    Wraces_table <<- Wraces_table %>% arrange(desc(date))
+    races_table <<- races_table %>% arrange(desc(date))
     
     rv[["MensRunners"]] <- runners_table[c("place", "last", "first", "year", "team", "override_rank", 
                                            "rank", "previous_rank", "previous_place", "active", "uniqueTableID")]
@@ -244,9 +257,9 @@ shinyServer(function(input, output) {
                                      "rank", "previous_rank", "previous_place", "active", "uniqueTableID")], 
                          rv[[paste0(input$gender, input$data_choice)]])
     if (input$gender == "Mens") {
-      runners_table <- rbind(newRunner, runners_table)
+      runners_table <<- rbind(newRunner, runners_table)
     } else {
-      Wrunners_table <- rbind(newRunner, Wrunners_table)
+      Wrunners_table <<- rbind(newRunner, Wrunners_table)
     }
    
     replaceData(proxyTeams, rv[[paste0(input$gender, input$data_choice)]], resetPaging = F, rownames = F)
@@ -254,6 +267,7 @@ shinyServer(function(input, output) {
   
   observeEvent(input$deleteRows, {
     if (!is.null(input$table_output_rows_selected)) {
+      
       if (input$gender == "Mens") {
         # print(which(runners_table$uniqueTableID %in% 
                       # rv[["MensRunners"]][as.numeric(input$table_output_rows_selected),]$uniqueTableID))

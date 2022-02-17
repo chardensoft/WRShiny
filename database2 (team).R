@@ -1,11 +1,12 @@
 ### Database - just teams
 library(uuid)
 library(dplyr)
+library(stringr)
 
-recalculateTeams <- function(MensRunners, MensTeams, WomensRunners, WomensTeams) {
-  Mrunners <- MensRunners[-length(MensRunners)]
+recalculateTeams <- function(runners_table, teams_table, Wrunners_table, Wteams_table) {
+  Mrunners <- runners_table[-length(runners_table)]
   # oldMrunners <- read.csv("database files/Mrunners.csv")
-  Mteams <- MensTeams
+  Mteams <- teams_table
   
   Mrunners$place[Mrunners$place == ""] <- NA
   Mrunners$RUNNER.ID <- paste0(Mrunners$last, Mrunners$first, Mrunners$team)
@@ -17,6 +18,7 @@ recalculateTeams <- function(MensRunners, MensTeams, WomensRunners, WomensTeams)
   Mrunners$previous_place[Mrunners$previous_place == ""] <- NA
   Mrunners$active[Mrunners$active == ""] <- "active"
   Mrunners$rank <- ifelse(is.na(Mrunners$override_rank), Mrunners$rank, Mrunners$override_rank)
+  Mrunners$override_rank <- NA
   
   if (length(which(Mrunners$team == "")) > 0) {
     Mrunners <- Mrunners[-which(Mrunners$team == ""),]
@@ -136,8 +138,8 @@ recalculateTeams <- function(MensRunners, MensTeams, WomensRunners, WomensTeams)
   
   Mrunners$uniqueTableID <- rownames(Mrunners)
   
-  MensRunners <- Mrunners
-  MensTeams <- Mteams
+  runners_table <- Mrunners
+  teams_table <- Mteams
   
   no_runners <- data.frame(team = no_runners[-1,])
   # write.csv(no_runners, "errors/Mempty_teams.csv", row.names = FALSE)
@@ -145,9 +147,9 @@ recalculateTeams <- function(MensRunners, MensTeams, WomensRunners, WomensTeams)
   
   ###################### WOMEN ##############################
   
-  Wrunners <- WomensRunners[-length(WomensRunners)]
+  Wrunners <- Wrunners_table[-length(Wrunners_table)]
   # oldWrunners <- read.csv("database files/Wrunners.csv")
-  Wteams <- WomensTeams
+  Wteams <- Wteams_table
   
   Wrunners$place[Wrunners$place == ""] <- NA
   Wrunners$RUNNER.ID <- paste0(Wrunners$last, Wrunners$first, Wrunners$team)
@@ -159,6 +161,8 @@ recalculateTeams <- function(MensRunners, MensTeams, WomensRunners, WomensTeams)
   Wrunners$previous_place[Wrunners$previous_place == ""] <- NA
   Wrunners$active[Wrunners$active == ""] <- "active"
   Wrunners$rank <- ifelse(is.na(Wrunners$override_rank), Wrunners$rank, Wrunners$override_rank)
+  Wrunners$override_rank <- NA
+  
   
   if (length(which(Wrunners$team == "")) > 0) {
     Wrunners <- Wrunners[-which(Wrunners$team == ""),]
@@ -278,12 +282,12 @@ recalculateTeams <- function(MensRunners, MensTeams, WomensRunners, WomensTeams)
   
   Wrunners$uniqueTableID <- rownames(Wrunners)
   
-  WomensRunners <- Wrunners
-  WomensTeams <- Wteams
+  Wrunners_table <- Wrunners
+  Wteams_table <- Wteams
   
   no_runners <- data.frame(team = no_runners[-1,])
   # write.csv(no_runners, "errors/Wempty_teams.csv", row.names = FALSE)
-  list(MensRunners, MensTeams, WomensRunners, WomensTeams)
+  list(runners_table, teams_table, Wrunners_table, Wteams_table)
 }
 
 
