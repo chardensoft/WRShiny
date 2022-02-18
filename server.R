@@ -49,6 +49,12 @@ WomensTeams <- Wteams_table[c("rank", "prev_rank", "name", "teamrank", "prev_rat
 WomensRaces <- Wraces_table[c("dist", "type", "race", "date", "PL", "NAME", "YEAR", "TEAM", "TIME", "TIME.IN.S", "Rank")]
 MensRaces <- races_table[c("dist", "type", "race", "date", "PL", "NAME", "YEAR", "TEAM", "TIME", "TIME.IN.S", "Rank")]
 
+Medited <- data.frame(uniqueTableID = NA)
+Wedited <- data.frame(uniqueTableID = NA)
+
+Mdeleted <- data.frame(team = NA)
+Wdeleted <- data.frame(team = NA)
+
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
   
@@ -83,7 +89,7 @@ shinyServer(function(input, output) {
     Wrunners_table$override_rank <<- rv[["WomensRunners"]]$override_rank
     Wrunners_table$active <<- rv[["WomensRunners"]]$active
     
-    newData <- recalculateTeams(runners_table, teams_table, Wrunners_table, Wteams_table)
+    newData <- recalculateTeams(runners_table, teams_table, Wrunners_table, Wteams_table, Medited, Wedited, Mdeleted, Wdeleted)
     
     runners_table <<- newData[[1]]
     teams_table <<- newData[[2]]
@@ -168,7 +174,7 @@ shinyServer(function(input, output) {
   rv <- reactiveValues(MensTeams = MensTeams, MensRunners = MensRunners, MensRaces = MensRaces, 
                            WomensTeams = WomensTeams, WomensRunners = WomensRunners, WomensRaces = WomensRaces)
   
-  output$table_output <- DT::renderDT(rv[[paste0(input$gender, input$data_choice)]], editable = list(
+  output$table_output <- DT::renderDT(isolate(rv[[paste0(input$gender, input$data_choice)]]), editable = list(
     target = 'cell', disable = list(columns = disableCol())
   ), rownames = F, options = list(pageLength = 25))
   
@@ -177,14 +183,39 @@ shinyServer(function(input, output) {
   observeEvent(input$table_output_cell_edit, {
     #get values
     info <- input$table_output_cell_edit
-    i <- info$row
-    # print(i)
-    j <- info$col + 1L
-    # print(j)
-    k <- info$value
+    # i <- info$row
+    # # print(i)
+    # j <- info$col + 1L
+    # # print(j)
+    # k <- info$value
+    print('here')
+    if (input$data_choice == "Runners") {
+      print('here')
+      if ((info$col + 1L) %in% c(5, 6, 10)) {
+        print('here')
+        if (input$gender == "Mens") {
+          print('here')
+          newEdit <- data.frame(uniqueTableID = rv[[paste0(input$gender, input$data_choice)]][info$row, length(rv[[paste0(input$gender, input$data_choice)]])])
+          Medited <<- rbind(newEdit, Medited)
+        } else {
+          newEdit <- data.frame(uniqueTableID = rv[[paste0(input$gender, input$data_choice)]][info$row, length(rv[[paste0(input$gender, input$data_choice)]])])
+          Wedited <<- rbind(newEdit, Wedited)
+        }
+      }
+    }
+    # 
     
     #write values to reactive
-    rv[[paste0(input$gender, input$data_choice)]][i,j] <- coerceValue(k, data.frame(rv[[paste0(input$gender, input$data_choice)]])[i,j])
+    # rv[[paste0(input$gender, input$data_choice)]][i,j] <- coerceValue(k, data.frame(rv[[paste0(input$gender, input$data_choice)]])[i,j])
+    rv[[paste0(input$gender, input$data_choice)]] <<- editData(rv[[paste0(input$gender, input$data_choice)]], info, proxyTeams, resetPaging = FALSE, rownames = FALSE)
+    # replaceData(proxyTeams, rv[[paste0(input$gender, input$data_choice)]], resetPaging = FALSE, rownames = FALSE)
+  })
+  
+  observeEvent(input$gender, {
+    replaceData(proxyTeams, rv[[paste0(input$gender, input$data_choice)]], resetPaging = FALSE, rownames = FALSE)
+  })
+  
+  observeEvent(input$data_choice, {
     replaceData(proxyTeams, rv[[paste0(input$gender, input$data_choice)]], resetPaging = FALSE, rownames = FALSE)
   })
   
@@ -208,7 +239,7 @@ shinyServer(function(input, output) {
     Wrunners_table$override_rank <<- rv[["WomensRunners"]]$override_rank
     Wrunners_table$active <<- rv[["WomensRunners"]]$active
     
-    newData <- recalculateTeams(runners_table, teams_table, Wrunners_table, Wteams_table)
+    newData <- recalculateTeams(runners_table, teams_table, Wrunners_table, Wteams_table, Medited, Wedited, Mdeleted, Wdeleted)
     
     runners_table <<- newData[[1]]
     teams_table <<- newData[[2]]
@@ -259,7 +290,7 @@ shinyServer(function(input, output) {
   
   observeEvent(input$add, {
     newRunner <- data.frame(place = NA, gender = ifelse(input$gender == "Mens", "M", "W"), last = "", first = "", year = "", 
-                             team = "", rid = "", tid = "", rank = NA, previous_rank = NA, 
+                             team = "", rid = "", tid = "", RUNNERID = "", rank = NA, previous_rank = NA, 
                              previous_place = NA, active = "active", override_rank = NA, 
                             uniqueTableID = as.character(max(as.numeric(rv[[paste0(input$gender, input$data_choice)]]$uniqueTableID)) + 1))
     rv[[paste0(input$gender, input$data_choice)]] <- rbind(newRunner[c("place", "last", "first", "year", "team", "override_rank", 
@@ -278,14 +309,15 @@ shinyServer(function(input, output) {
     if (!is.null(input$table_output_rows_selected)) {
       
       if (input$gender == "Mens") {
-        # print(which(runners_table$uniqueTableID %in% 
-                      # rv[["MensRunners"]][as.numeric(input$table_output_rows_selected),]$uniqueTableID))
         runners_table <<- runners_table[-which(runners_table$uniqueTableID %in% 
                          rv[["MensRunners"]][as.numeric(input$table_output_rows_selected),]$uniqueTableID),]
-        # print(length(runners_table$last))
+        newDelete <- rv[["MensRunners"]][as.numeric(input$table_output_rows_selected), 5]
+        Mdeleted <<- rbind(newDelete, Mdeleted)
       } else {
         Wrunners_table <<- Wrunners_table[-which(Wrunners_table$uniqueTableID %in% 
                           rv[["WomensRunners"]][as.numeric(input$table_output_rows_selected),]$uniqueTableID),]
+        newDelete <- rv[["WomensRunners"]][as.numeric(input$table_output_rows_selected), 5]
+        Wdeleted <<- rbind(newDelete, Wdeleted)
       }
       rv[[paste0(input$gender, input$data_choice)]] <- rv[[paste0(input$gender, 
                                     input$data_choice)]][-as.numeric(input$table_output_rows_selected),]
