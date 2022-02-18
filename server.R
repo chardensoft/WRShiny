@@ -168,7 +168,7 @@ shinyServer(function(input, output) {
   rv <- reactiveValues(MensTeams = MensTeams, MensRunners = MensRunners, MensRaces = MensRaces, 
                            WomensTeams = WomensTeams, WomensRunners = WomensRunners, WomensRaces = WomensRaces)
   
-  output$table_output <- DT::renderDT(rv[[paste0(input$gender, input$data_choice)]], editable = list(
+  output$table_output <- DT::renderDT(isolate(rv[[paste0(input$gender, input$data_choice)]]), editable = list(
     target = 'cell', disable = list(columns = disableCol())
   ), rownames = F, options = list(pageLength = 25))
   
@@ -177,15 +177,16 @@ shinyServer(function(input, output) {
   observeEvent(input$table_output_cell_edit, {
     #get values
     info <- input$table_output_cell_edit
-    i <- info$row
-    # print(i)
-    j <- info$col + 1L
-    # print(j)
-    k <- info$value
+    # i <- info$row
+    # # print(i)
+    # j <- info$col + 1L
+    # # print(j)
+    # k <- info$value
     
     #write values to reactive
-    rv[[paste0(input$gender, input$data_choice)]][i,j] <- coerceValue(k, data.frame(rv[[paste0(input$gender, input$data_choice)]])[i,j])
-    replaceData(proxyTeams, rv[[paste0(input$gender, input$data_choice)]], resetPaging = FALSE, rownames = FALSE)
+    # rv[[paste0(input$gender, input$data_choice)]][i,j] <- coerceValue(k, data.frame(rv[[paste0(input$gender, input$data_choice)]])[i,j])
+    rv[[paste0(input$gender, input$data_choice)]] <<- editData(rv[[paste0(input$gender, input$data_choice)]], info, proxyTeams, resetPaging = FALSE, rownames = FALSE)
+    # replaceData(proxyTeams, rv[[paste0(input$gender, input$data_choice)]], resetPaging = FALSE, rownames = FALSE)
   })
   
   observeEvent(input$update, {
