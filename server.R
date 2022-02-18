@@ -189,6 +189,14 @@ shinyServer(function(input, output) {
     # replaceData(proxyTeams, rv[[paste0(input$gender, input$data_choice)]], resetPaging = FALSE, rownames = FALSE)
   })
   
+  observeEvent(input$gender, {
+    replaceData(proxyTeams, rv[[paste0(input$gender, input$data_choice)]], resetPaging = FALSE, rownames = FALSE)
+  })
+  
+  observeEvent(input$data_choice, {
+    replaceData(proxyTeams, rv[[paste0(input$gender, input$data_choice)]], resetPaging = FALSE, rownames = FALSE)
+  })
+  
   observeEvent(input$update, {
     showModal(modalDialog(
       title = "Updating Firebase",
