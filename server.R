@@ -259,7 +259,7 @@ shinyServer(function(input, output) {
   
   observeEvent(input$add, {
     newRunner <- data.frame(place = NA, gender = ifelse(input$gender == "Mens", "M", "W"), last = "", first = "", year = "", 
-                             team = "", rid = "", tid = "", rank = NA, previous_rank = NA, 
+                             team = "", rid = "", tid = "", RUNNERID = "", rank = NA, previous_rank = NA, 
                              previous_place = NA, active = "active", override_rank = NA, 
                             uniqueTableID = as.character(max(as.numeric(rv[[paste0(input$gender, input$data_choice)]]$uniqueTableID)) + 1))
     rv[[paste0(input$gender, input$data_choice)]] <- rbind(newRunner[c("place", "last", "first", "year", "team", "override_rank", 
@@ -278,11 +278,8 @@ shinyServer(function(input, output) {
     if (!is.null(input$table_output_rows_selected)) {
       
       if (input$gender == "Mens") {
-        # print(which(runners_table$uniqueTableID %in% 
-                      # rv[["MensRunners"]][as.numeric(input$table_output_rows_selected),]$uniqueTableID))
         runners_table <<- runners_table[-which(runners_table$uniqueTableID %in% 
                          rv[["MensRunners"]][as.numeric(input$table_output_rows_selected),]$uniqueTableID),]
-        # print(length(runners_table$last))
       } else {
         Wrunners_table <<- Wrunners_table[-which(Wrunners_table$uniqueTableID %in% 
                           rv[["WomensRunners"]][as.numeric(input$table_output_rows_selected),]$uniqueTableID),]
