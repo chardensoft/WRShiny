@@ -1,7 +1,6 @@
 ### Database - just teams
 library(uuid)
 library(dplyr)
-library(stringr)
 
 recalculateTeams <- function(runners_table, teams_table, Wrunners_table, Wteams_table) {
   Mrunners <- runners_table
