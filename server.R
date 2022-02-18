@@ -49,6 +49,12 @@ WomensTeams <- Wteams_table[c("rank", "prev_rank", "name", "teamrank", "prev_rat
 WomensRaces <- Wraces_table[c("dist", "type", "race", "date", "PL", "NAME", "YEAR", "TEAM", "TIME", "TIME.IN.S", "Rank")]
 MensRaces <- races_table[c("dist", "type", "race", "date", "PL", "NAME", "YEAR", "TEAM", "TIME", "TIME.IN.S", "Rank")]
 
+Medited <- data.frame(uniqueTableID = NA)
+Wedited <- data.frame(uniqueTableID = NA)
+
+Mdeleted <- data.frame(team = NA)
+Wdeleted <- data.frame(team = NA)
+
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
   
@@ -83,7 +89,7 @@ shinyServer(function(input, output) {
     Wrunners_table$override_rank <<- rv[["WomensRunners"]]$override_rank
     Wrunners_table$active <<- rv[["WomensRunners"]]$active
     
-    newData <- recalculateTeams(runners_table, teams_table, Wrunners_table, Wteams_table)
+    newData <- recalculateTeams(runners_table, teams_table, Wrunners_table, Wteams_table, Medited, Wedited, Mdeleted, Wdeleted)
     
     runners_table <<- newData[[1]]
     teams_table <<- newData[[2]]
@@ -182,6 +188,22 @@ shinyServer(function(input, output) {
     # j <- info$col + 1L
     # # print(j)
     # k <- info$value
+    print('here')
+    if (input$data_choice == "Runners") {
+      print('here')
+      if ((info$col + 1L) %in% c(5, 6, 10)) {
+        print('here')
+        if (input$gender == "Mens") {
+          print('here')
+          newEdit <- data.frame(uniqueTableID = rv[[paste0(input$gender, input$data_choice)]][info$row, length(rv[[paste0(input$gender, input$data_choice)]])])
+          Medited <<- rbind(newEdit, Medited)
+        } else {
+          newEdit <- data.frame(uniqueTableID = rv[[paste0(input$gender, input$data_choice)]][info$row, length(rv[[paste0(input$gender, input$data_choice)]])])
+          Wedited <<- rbind(newEdit, Wedited)
+        }
+      }
+    }
+    # 
     
     #write values to reactive
     # rv[[paste0(input$gender, input$data_choice)]][i,j] <- coerceValue(k, data.frame(rv[[paste0(input$gender, input$data_choice)]])[i,j])
@@ -217,7 +239,7 @@ shinyServer(function(input, output) {
     Wrunners_table$override_rank <<- rv[["WomensRunners"]]$override_rank
     Wrunners_table$active <<- rv[["WomensRunners"]]$active
     
-    newData <- recalculateTeams(runners_table, teams_table, Wrunners_table, Wteams_table)
+    newData <- recalculateTeams(runners_table, teams_table, Wrunners_table, Wteams_table, Medited, Wedited, Mdeleted, Wdeleted)
     
     runners_table <<- newData[[1]]
     teams_table <<- newData[[2]]
@@ -289,9 +311,13 @@ shinyServer(function(input, output) {
       if (input$gender == "Mens") {
         runners_table <<- runners_table[-which(runners_table$uniqueTableID %in% 
                          rv[["MensRunners"]][as.numeric(input$table_output_rows_selected),]$uniqueTableID),]
+        newDelete <- rv[["MensRunners"]][as.numeric(input$table_output_rows_selected), 5]
+        Mdeleted <<- rbind(newDelete, Mdeleted)
       } else {
         Wrunners_table <<- Wrunners_table[-which(Wrunners_table$uniqueTableID %in% 
                           rv[["WomensRunners"]][as.numeric(input$table_output_rows_selected),]$uniqueTableID),]
+        newDelete <- rv[["WomensRunners"]][as.numeric(input$table_output_rows_selected), 5]
+        Wdeleted <<- rbind(newDelete, Wdeleted)
       }
       rv[[paste0(input$gender, input$data_choice)]] <- rv[[paste0(input$gender, 
                                     input$data_choice)]][-as.numeric(input$table_output_rows_selected),]
