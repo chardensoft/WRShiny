@@ -285,7 +285,7 @@ shinyServer(function(input, output) {
         # print(length(runners_table$last))
       } else {
         Wrunners_table <<- Wrunners_table[-which(Wrunners_table$uniqueTableID %in% 
-                          rv[["MensRunners"]][as.numeric(input$table_output_rows_selected),]$uniqueTableID),]
+                          rv[["WomensRunners"]][as.numeric(input$table_output_rows_selected),]$uniqueTableID),]
       }
       rv[[paste0(input$gender, input$data_choice)]] <- rv[[paste0(input$gender, 
                                     input$data_choice)]][-as.numeric(input$table_output_rows_selected),]
