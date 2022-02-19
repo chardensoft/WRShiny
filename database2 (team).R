@@ -214,7 +214,7 @@ recalculateTeams <- function(runners_table, teams_table, Wrunners_table, Wteams_
   runners_table <- Mrunners
   teams_table <- Mteams
   
-  no_runners <- data.frame(team = no_runners[-1,])
+  # no_runners <- data.frame(team = no_runners[-1,])
   # write.csv(no_runners, "errors/Mempty_teams.csv", row.names = FALSE)
   
   
@@ -424,7 +424,7 @@ recalculateTeams <- function(runners_table, teams_table, Wrunners_table, Wteams_
   Wrunners_table <- Wrunners
   Wteams_table <- Wteams
   
-  no_runners <- data.frame(team = no_runners[-1,])
+  # no_runners <- data.frame(team = no_runners[-1,])
   # write.csv(no_runners, "errors/Wempty_teams.csv", row.names = FALSE)
   
   list(runners_table, teams_table, Wrunners_table, Wteams_table)
