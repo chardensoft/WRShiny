@@ -23,6 +23,13 @@ Wrunners_table <- bind_rows(read_json(path = "www/Wrunners.json"))
 Wraces_table <- bind_rows(read_json(path = "www/Wraces.json"))
 races_table <- bind_rows(read_json(path = "www/races.json"))
 
+if ("RUNNER.ID" %in% colnames(runners_table)) {
+  runners_table <- runners_table[-which(colnames(runners_table) == "RUNNER.ID")]
+}
+if ("RUNNER.ID" %in% colnames(Wrunners_table)) {
+  Wrunners_table <- Wrunners_table[-which(colnames(Wrunners_table) == "RUNNER.ID")]
+}
+
 runners_table$uniqueTableID <- rownames(runners_table)
 Wrunners_table$uniqueTableID <- rownames(Wrunners_table)
 
