@@ -36,8 +36,8 @@ Wrunners_table$uniqueTableID <- rownames(Wrunners_table)
 races_table$date <- as.Date(races_table$date, format = "%m/%d/%y")
 Wraces_table$date <- as.Date(Wraces_table$date, format = "%m/%d/%y")
 
-Wrunners_table <- Wrunners_table %>% arrange(place)
-runners_table <- runners_table %>% arrange(place)
+Wrunners_table <- Wrunners_table %>% arrange(desc(rank))
+runners_table <- runners_table %>% arrange(desc(rank))
 Wraces_table <- Wraces_table %>% arrange(desc(date))
 races_table <- races_table %>% arrange(desc(date))
 
@@ -106,8 +106,8 @@ shinyServer(function(input, output) {
     races_table$date <- as.Date(races_table$date, format = "%m/%d/%y")
     Wraces_table$date <- as.Date(Wraces_table$date, format = "%m/%d/%y")
     
-    Wrunners_table <<- Wrunners_table %>% arrange(place)
-    runners_table <<- runners_table %>% arrange(place)
+    Wrunners_table <<- Wrunners_table %>% arrange(desc(rank))
+    runners_table <<- runners_table %>% arrange(desc(rank))
     Wraces_table <<- Wraces_table %>% arrange(desc(date))
     races_table <<- races_table %>% arrange(desc(date))
     
@@ -146,8 +146,8 @@ shinyServer(function(input, output) {
     races_table$date <<- as.Date(races_table$date, format = "%m/%d/%y")
     Wraces_table$date <<- as.Date(Wraces_table$date, format = "%m/%d/%y")
     
-    Wrunners_table <<- Wrunners_table %>% arrange(place)
-    runners_table <<- runners_table %>% arrange(place)
+    Wrunners_table <<- Wrunners_table %>% arrange(desc(rank))
+    runners_table <<- runners_table %>% arrange(desc(rank))
     Wraces_table <<- Wraces_table %>% arrange(desc(date))
     races_table <<- races_table %>% arrange(desc(date))
     
@@ -258,8 +258,8 @@ shinyServer(function(input, output) {
     races_table$date <<- as.Date(races_table$date, format = "%m/%d/%y")
     Wraces_table$date <<- as.Date(Wraces_table$date, format = "%m/%d/%y")
     
-    Wrunners_table <<- Wrunners_table %>% arrange(place)
-    runners_table <<- runners_table %>% arrange(place)
+    Wrunners_table <<- Wrunners_table %>% arrange(desc(rank))
+    runners_table <<- runners_table %>% arrange(desc(rank))
     Wraces_table <<- Wraces_table %>% arrange(desc(date))
     races_table <<- races_table %>% arrange(desc(date))
     
