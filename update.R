@@ -14,6 +14,7 @@ updateFirebase <- function(MensRunners, WomensRunners, MensTeams, WomensTeams) {
   # testrunners$previous_place <- as.integer(testrunners$previous_place)
   write_json(testrunners, "www/runners.json")
   test_teams <- MensTeams
+  test_teams$rank <- as.numeric(test_teams$rank)
   write_json(test_teams, "www/teams.json")
   
   
@@ -29,6 +30,7 @@ updateFirebase <- function(MensRunners, WomensRunners, MensTeams, WomensTeams) {
   # Wtestrunners$previous_place <- as.integer(Wtestrunners$previous_place)
   write_json(Wtestrunners, "www/Wrunners.json")
   Wtest_teams <- WomensTeams
+  Wtest_teams$rank <- as.numeric(Wtest_teams$rank)
   write_json(Wtest_teams, "www/Wteams.json")
   
   updated <- read_json("www/updated.json")
