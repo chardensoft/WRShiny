@@ -9,7 +9,7 @@ updateFirebase <- function(MensRunners, WomensRunners, MensTeams, WomensTeams) {
     testrunners <- testrunners[,-which(colnames(testrunners) %in% c("uniqueTableID"))]
   }
   # testrunners$place <- as.integer(testrunners$place)
-  # testrunners$rank <- as.numeric(testrunners$rank)
+  testrunners$rank <- as.numeric(testrunners$rank)
   # testrunners$previous_rank <- as.numeric(testrunners$previous_rank)
   # testrunners$previous_place <- as.integer(testrunners$previous_place)
   write_json(testrunners, "www/runners.json")
@@ -24,7 +24,7 @@ updateFirebase <- function(MensRunners, WomensRunners, MensTeams, WomensTeams) {
     Wtestrunners <- Wtestrunners[,-which(colnames(Wtestrunners) %in% c("uniqueTableID"))]
   }
   # Wtestrunners$place <- as.integer(Wtestrunners$place)
-  # Wtestrunners$rank <- as.numeric(Wtestrunners$rank)
+  Wtestrunners$rank <- as.numeric(Wtestrunners$rank)
   # Wtestrunners$previous_rank <- as.numeric(Wtestrunners$previous_rank)
   # Wtestrunners$previous_place <- as.integer(Wtestrunners$previous_place)
   write_json(Wtestrunners, "www/Wrunners.json")
