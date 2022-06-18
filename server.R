@@ -252,7 +252,7 @@ shinyServer(function(input, output) {
     Wrunners_table$active <<- rv[["WomensRunners"]]$active
     
     newData <- recalculateTeams(runners_table, teams_table, Wrunners_table, Wteams_table, Medited, Wedited, Mdeleted, Wdeleted)
-    
+    print('here')
     runners_table <<- newData[[1]]
     teams_table <<- newData[[2]]
     Wrunners_table <<- newData[[3]]

@@ -112,7 +112,8 @@ recalculateTeams <- function(runners_table, teams_table, Wrunners_table, Wteams_
   }
   
   new_teams <- data.frame(name = unique(MeditedTeams[which(!(MeditedTeams %in% Mteams$name))]))
-  new_teams <- new_teams[!is.na(new_teams$name)]
+  
+  new_teams <- new_teams[!is.na(new_teams$name),] 
   
   if (length(new_teams$name) > 0) {
     new_teams$firstrank <- NA
@@ -322,7 +323,7 @@ recalculateTeams <- function(runners_table, teams_table, Wrunners_table, Wteams_
   }
   
   new_teams <- data.frame(name = unique(WeditedTeams[which(!(WeditedTeams %in% Wteams$name))]))
-  new_teams <- new_teams[!is.na(new_teams$name)]
+  new_teams <- new_teams[!is.na(new_teams$name),]
   
   if (length(new_teams$name) > 0) {
     new_teams$firstrank <- NA
