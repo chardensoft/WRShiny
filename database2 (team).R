@@ -30,14 +30,17 @@ recalculateTeams <- function(runners_table, teams_table, Wrunners_table, Wteams_
     Mrunners <- Mrunners[-which(tolower(Mrunners$team) == "unattached"),]
   }
   
-  inactives <- Mrunners[which(Mrunners$active == "inactive"),]
+  if (length(which(Mrunners$active == "inactive")) > 0) {
+    inactives <- Mrunners[which(Wrunners$active == "inactive"),]  
+  }
   Mrunners <- Mrunners[which(Mrunners$active == "active"),] %>% 
     arrange(desc(rank))
   
   for (i in c(which(is.na(Mrunners$rid)), which(Mrunners$rid == ""))) {
     Mrunners$rid[i] <- UUIDgenerate()
   }
-  MeditedTeams <- Mrunners$team[which(Mrunners$uniqueTableID %in% Medited$uniqueTableID)]
+  theEditedTeams <- data.frame(team = Mrunners$team[which(Mrunners$uniqueTableID %in% Medited$uniqueTableID)])
+  MeditedTeams <- data.frame(team = unique(c(theEditedTeams$team, Medited$team))[-which(is.na(unique(c(theEditedTeams$team, Medited$team))))])
   MdeletedTeams <- Mteams$name[which(Mteams$name %in% Mdeleted$team)]
   
   listOfEdits <- which(Mteams$name %in% c(MeditedTeams, MdeletedTeams))
@@ -250,14 +253,19 @@ recalculateTeams <- function(runners_table, teams_table, Wrunners_table, Wteams_
     Wrunners <- Wrunners[-which(tolower(Wrunners$team) == "unattached"),]
   }
   
-  inactives <- Wrunners[which(Wrunners$active == "inactive"),]
+  if (length(which(Wrunners$active == "inactive")) > 0) {
+    inactives <- Wrunners[which(Wrunners$active == "inactive"),]  
+  }
+  
   Wrunners <- Wrunners[which(Wrunners$active == "active"),] %>% 
     arrange(desc(rank))
   
   for (i in c(which(is.na(Wrunners$rid)), which(Wrunners$rid == ""))) {
     Wrunners$rid[i] <- UUIDgenerate()
   }
-  WeditedTeams <- Wrunners$team[which(Wrunners$uniqueTableID %in% Wedited$uniqueTableID)]
+  
+  theEditedTeams <- data.frame(team = Wrunners$team[which(Wrunners$uniqueTableID %in% Wedited$uniqueTableID)])
+  WeditedTeams <- data.frame(team = unique(c(theEditedTeams$team, Wedited$team))[-which(is.na(unique(c(theEditedTeams$team, Wedited$team))))])
   WdeletedTeams <- Wteams$name[which(Wteams$name %in% Wdeleted$team)]
   
   listOfEdits <- which(Wteams$name %in% c(WeditedTeams, WdeletedTeams))

@@ -56,8 +56,8 @@ WomensTeams <- Wteams_table[c("rank", "prev_rank", "name", "teamrank", "prev_rat
 WomensRaces <- Wraces_table[c("dist", "type", "race", "date", "PL", "NAME", "YEAR", "TEAM", "TIME", "TIME.IN.S", "Rank")]
 MensRaces <- races_table[c("dist", "type", "race", "date", "PL", "NAME", "YEAR", "TEAM", "TIME", "TIME.IN.S", "Rank")]
 
-Medited <- data.frame(uniqueTableID = NA)
-Wedited <- data.frame(uniqueTableID = NA)
+Medited <- data.frame(uniqueTableID = NA, team = NA)
+Wedited <- data.frame(uniqueTableID = NA, team = NA)
 
 Mdeleted <- data.frame(team = NA)
 Wdeleted <- data.frame(team = NA)
@@ -97,7 +97,8 @@ shinyServer(function(input, output) {
     Wrunners_table$active <<- rv[["WomensRunners"]]$active
     
     newData <- recalculateTeams(runners_table, teams_table, Wrunners_table, Wteams_table, Medited, Wedited, Mdeleted, Wdeleted)
-    
+    Medited <<- data.frame(uniqueTableID = NA, team = NA)
+    Wedited <<- data.frame(uniqueTableID = NA, team = NA)
     runners_table <<- newData[[1]]
     teams_table <<- newData[[2]]
     Wrunners_table <<- newData[[3]]
@@ -170,6 +171,9 @@ shinyServer(function(input, output) {
     rv[["WomensRunners"]] <- WomensRunners
     rv[["WomensTeams"]] <- WomensTeams
     
+    Medited <<- data.frame(uniqueTableID = NA, team = NA)
+    Wedited <<- data.frame(uniqueTableID = NA, team = NA)
+    
     replaceData(proxyTeams, rv[[paste0(input$gender, input$data_choice)]], resetPaging = F, rownames = F)
     showModal(modalDialog(
       title = "Refreshing",
@@ -206,11 +210,15 @@ shinyServer(function(input, output) {
           # print('here3')
           if (input$gender == "Mens") {
             # print('here4')
-            newEdit <- data.frame(uniqueTableID = rv[[paste0(input$gender, input$data_choice)]][info$row, length(rv[[paste0(input$gender, input$data_choice)]])])
+            newEdit <- data.frame(uniqueTableID = rv[[paste0(input$gender, input$data_choice)]][info$row, length(rv[[paste0(input$gender, input$data_choice)]])], 
+                                  team = MensRunners[info$row, (info$col + 1L)])
             Medited <<- rbind(newEdit, Medited)
           } else {
-            newEdit <- data.frame(uniqueTableID = rv[[paste0(input$gender, input$data_choice)]][info$row, length(rv[[paste0(input$gender, input$data_choice)]])])
+            # print(WomensRunners[info$row, (info$col + 1L)])
+            newEdit <- data.frame(uniqueTableID = rv[[paste0(input$gender, input$data_choice)]][info$row, length(rv[[paste0(input$gender, input$data_choice)]])], 
+                                  team = WomensRunners[info$row, (info$col + 1L)])
             Wedited <<- rbind(newEdit, Wedited)
+            
           }
         }
       }
@@ -252,7 +260,8 @@ shinyServer(function(input, output) {
     Wrunners_table$active <<- rv[["WomensRunners"]]$active
     
     newData <- recalculateTeams(runners_table, teams_table, Wrunners_table, Wteams_table, Medited, Wedited, Mdeleted, Wdeleted)
-    print('here')
+    Medited <<- data.frame(uniqueTableID = NA, team = NA)
+    Wedited <<- data.frame(uniqueTableID = NA, team = NA)
     runners_table <<- newData[[1]]
     teams_table <<- newData[[2]]
     Wrunners_table <<- newData[[3]]
