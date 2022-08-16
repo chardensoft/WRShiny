@@ -203,6 +203,7 @@ shinyServer(function(input, output) {
     # k <- info$value
     # print(length(info))
     # print('here1')
+    rv[[paste0(input$gender, input$data_choice)]] <<- editData(rv[[paste0(input$gender, input$data_choice)]], info, proxyTeams, resetPaging = FALSE, rownames = FALSE)
     if (length(info) > 0) {
       if (input$data_choice == "Runners") {
         # print('here2')
@@ -211,22 +212,17 @@ shinyServer(function(input, output) {
           if (input$gender == "Mens") {
             # print('here4')
             newEdit <- data.frame(uniqueTableID = rv[[paste0(input$gender, input$data_choice)]][info$row, length(rv[[paste0(input$gender, input$data_choice)]])], 
-                                  team = MensRunners[info$row, (info$col + 1L)])
-            Medited <<- rbind(newEdit, Medited)
+                                  team = rv[[paste0(input$gender, input$data_choice)]][info$row, (5)])
           } else {
             # print(WomensRunners[info$row, (info$col + 1L)])
             newEdit <- data.frame(uniqueTableID = rv[[paste0(input$gender, input$data_choice)]][info$row, length(rv[[paste0(input$gender, input$data_choice)]])], 
-                                  team = WomensRunners[info$row, (info$col + 1L)])
-            Wedited <<- rbind(newEdit, Wedited)
-            
+                                  team = rv[[paste0(input$gender, input$data_choice)]][info$row, (5)])
           }
         }
       }
       # 
-      
       #write values to reactive
       # rv[[paste0(input$gender, input$data_choice)]][i,j] <- coerceValue(k, data.frame(rv[[paste0(input$gender, input$data_choice)]])[i,j])
-      rv[[paste0(input$gender, input$data_choice)]] <<- editData(rv[[paste0(input$gender, input$data_choice)]], info, proxyTeams, resetPaging = FALSE, rownames = FALSE)
     }
     # replaceData(proxyTeams, rv[[paste0(input$gender, input$data_choice)]], resetPaging = FALSE, rownames = FALSE)
   })
