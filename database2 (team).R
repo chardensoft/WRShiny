@@ -198,12 +198,40 @@ recalculateTeams <- function(runners_table, teams_table, Wrunners_table, Wteams_
     Mteams <- Mteams[which(!is.na(Mteams$firstrank)),]
   }
 
-  Mteams <- Mteams %>% 
-    arrange(desc(teamrank))
+  Mteams$newcount <- 5
+  for (i in 1:length(Mteams$rank)) {
+    if (length(which(is.na(Mteams[i,c(4,6,8,10,12)]))) > 0) {
+      if (length(which(is.na(Mteams[i,c(4,6,8,10)]))) > 0) {
+        if (length(which(is.na(Mteams[i,c(4,6,8)]))) > 0) {
+          if (length(which(is.na(Mteams[i,c(4,6)]))) > 0) {
+            Mteams$newcount[i] <- 1
+          } else {
+            Mteams$newcount[i] <- 2
+          }
+        } else {
+          Mteams$newcount[i] <- 3
+        }
+      } else {
+        Mteams$newcount[i] <- 4
+      }
+    }
+  }
+  
+  Mteams <- Mteams %>% arrange(desc(teamrank), desc(newcount), 
+                               desc(firstrank), desc(secondrank), desc(thirdrank), desc(fourthrank), desc(fifthrank))
+  Mrunners$rank <- as.numeric(Mrunners$rank)
+  
   Mrunners <- Mrunners %>% 
     arrange(desc(rank))
-  Mteams$rank <- rownames(Mteams)
-  Mrunners$place <- rownames(Mrunners)
+  
+  for (i in 1:length(Mteams$rank)) {
+    Mteams$rank[i] <- i
+  }
+  for (i in 1:length(Mrunners$place)) {
+    Mrunners$place[i] <- i
+  }
+  
+  Mteams <- Mteams %>% select(-newcount)
   
   for (i in which(is.na(Mrunners$tid))) {
     Mrunners$tid[i] <- ifelse(length(Mteams[which(tolower(Mrunners[i,]$team) == tolower(Mteams$name)),]$tid)>0,
@@ -416,12 +444,40 @@ recalculateTeams <- function(runners_table, teams_table, Wrunners_table, Wteams_
     Wteams <- Wteams[which(!is.na(Wteams$firstrank)),]
   }
   
-  Wteams <- Wteams %>% 
-    arrange(desc(teamrank))
+  Wteams$newcount <- 5
+  for (i in 1:length(Wteams$rank)) {
+    if (length(which(is.na(Wteams[i,c(4,6,8,10,12)]))) > 0) {
+      if (length(which(is.na(Wteams[i,c(4,6,8,10)]))) > 0) {
+        if (length(which(is.na(Wteams[i,c(4,6,8)]))) > 0) {
+          if (length(which(is.na(Wteams[i,c(4,6)]))) > 0) {
+            Wteams$newcount[i] <- 1
+          } else {
+            Wteams$newcount[i] <- 2
+          }
+        } else {
+          Wteams$newcount[i] <- 3
+        }
+      } else {
+        Wteams$newcount[i] <- 4
+      }
+    }
+  }
+  
+  Wteams <- Wteams %>% arrange(desc(teamrank), desc(newcount), 
+                               desc(firstrank), desc(secondrank), desc(thirdrank), desc(fourthrank), desc(fifthrank))
+  Wrunners$rank <- as.numeric(Wrunners$rank)
+  
   Wrunners <- Wrunners %>% 
     arrange(desc(rank))
-  Wteams$rank <- rownames(Wteams)
-  Wrunners$place <- rownames(Wrunners)
+  
+  for (i in 1:length(Wteams$rank)) {
+    Wteams$rank[i] <- i
+  }
+  for (i in 1:length(Wrunners$place)) {
+    Wrunners$place[i] <- i
+  }
+  
+  Wteams <- Wteams %>% select(-newcount)
   
   for (i in which(is.na(Wrunners$tid))) {
     Wrunners$tid[i] <- ifelse(length(Wteams[which(tolower(Wrunners[i,]$team) == tolower(Wteams$name)),]$tid)>0,
