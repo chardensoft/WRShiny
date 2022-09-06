@@ -213,7 +213,7 @@ shinyServer(function(input, output) {
             # print('here4')
             newEdit <- data.frame(uniqueTableID = rv[[paste0(input$gender, input$data_choice)]][info$row, length(rv[[paste0(input$gender, input$data_choice)]])], 
                                   team = rv[[paste0(input$gender, input$data_choice)]][info$row, (5)])
-            print(newEdit)
+            # print(newEdit)
           } else {
             # print(WomensRunners[info$row, (info$col + 1L)])
             newEdit <- data.frame(uniqueTableID = rv[[paste0(input$gender, input$data_choice)]][info$row, length(rv[[paste0(input$gender, input$data_choice)]])], 
