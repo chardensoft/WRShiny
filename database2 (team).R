@@ -43,7 +43,7 @@ recalculateTeams <- function(runners_table, teams_table, Wrunners_table, Wteams_
   MeditedTeams <- data.frame(team = unique(c(theEditedTeams$team, Medited$team))[-which(is.na(unique(c(theEditedTeams$team, Medited$team))))])
   MdeletedTeams <- Mteams$name[which(Mteams$name %in% Mdeleted$team)]
   
-  listOfEdits <- Mteams$name #which(Mteams$name %in% c(MeditedTeams, MdeletedTeams))
+  listOfEdits <- c(1:length(Mteams$name)) #which(Mteams$name %in% c(MeditedTeams, MdeletedTeams))
   
   if (length(listOfEdits) > 0) {
     Mteams$firstrank[listOfEdits] <- NA
@@ -296,7 +296,7 @@ recalculateTeams <- function(runners_table, teams_table, Wrunners_table, Wteams_
   WeditedTeams <- data.frame(team = unique(c(theEditedTeams$team, Wedited$team))[-which(is.na(unique(c(theEditedTeams$team, Wedited$team))))])
   WdeletedTeams <- Wteams$name[which(Wteams$name %in% Wdeleted$team)]
   
-  listOfEdits <- Wteams$name #which(Wteams$name %in% c(WeditedTeams, WdeletedTeams))
+  listOfEdits <- c(1:length(Wteams$name)) #which(Wteams$name %in% c(WeditedTeams, WdeletedTeams))
   
   if (length(listOfEdits) > 0) {
     Wteams$firstrank[listOfEdits] <- NA
